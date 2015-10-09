@@ -16,14 +16,51 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 public class MainActivity extends ActionBarActivity {
 //    ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
+    ArrayList<Integer> queue = new ArrayList<Integer>();
+    ArrayList<ImageButton> btnList = new ArrayList<ImageButton>();
+
+    ImageButton btn1;
+    ImageButton btn2;
+    ImageButton btn3;
+    ImageButton btn4;
+    ImageButton btn5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btn1 = (ImageButton) findViewById(R.id.imageButton);
+        btn2 = (ImageButton) findViewById(R.id.imageButton2);
+        btn3 = (ImageButton) findViewById(R.id.imageButton3);
+        btn4 = (ImageButton) findViewById(R.id.imageButton4);
+        btn5 = (ImageButton) findViewById(R.id.imageButton5);
+
+        btnList.add(btn1);
+        btnList.add(btn2);
+        btnList.add(btn3);
+        btnList.add(btn4);
+        btnList.add(btn5);
+
+        for(int i = 0; i < 5; i++){
+            int rndInt = (int) (Math.random()*4);
+            queue.add(rndInt);
+        }
+
+        refreshImage();
+
+
+
+
+
+
 
 //        ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
 //        btn1.setImageResource(R.drawable.char02);
@@ -44,21 +81,50 @@ public class MainActivity extends ActionBarActivity {
 
         int action = event.getAction();
         if(action == MotionEvent.ACTION_DOWN){
+            int rndInt = (int) (Math.random()*4);
+            queue.add(rndInt);
+
             if(event.getX() < width/2){
+
 //                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
-                btn1.setImageResource(R.drawable.char02);
 //                toast.show();
+
+
+
             }
             else{
 //                Toast toast = Toast.makeText(this, "오른쪽 입력.", Toast.LENGTH_SHORT);
-                btn1.setImageResource(R.drawable.char03);
 //                toast.show();
-            }
 
+
+            }
+            refreshImage();
+            queue.remove(0);
 
         }
 
         return super.onTouchEvent(event);
+    }
+
+    public void refreshImage(){
+        for(int i = 0; i < btnList.size(); i++){
+            int rndInt = queue.get(i);
+            ImageButton curBtn = btnList.get(i);
+            switch (rndInt){
+                case 0:
+                    curBtn.setImageResource(R.drawable.char01);
+                    break;
+                case 1:
+                    curBtn.setImageResource(R.drawable.char02);
+                    break;
+                case 2:
+                    curBtn.setImageResource(R.drawable.char03);
+                    break;
+                case 3:
+                    curBtn.setImageResource(R.drawable.char04);
+                    break;
+            }
+        }
     }
 
 //
