@@ -1,10 +1,6 @@
 package com.exitsoft.game;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
@@ -14,11 +10,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -32,10 +26,18 @@ public class MainActivity extends ActionBarActivity {
     ImageButton btn4;
     ImageButton btn5;
 
+    int score = 0;
+    int combo = 0;
+    TextView scoreView;
+    TextView comboView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        scoreView = (TextView) findViewById(R.id.scoreView);
+        comboView = (TextView) findViewById(R.id.comboView);
 
         btn1 = (ImageButton) findViewById(R.id.imageButton);
         btn2 = (ImageButton) findViewById(R.id.imageButton2);
@@ -48,6 +50,8 @@ public class MainActivity extends ActionBarActivity {
         btnList.add(btn3);
         btnList.add(btn4);
         btnList.add(btn5);
+
+
 
         for(int i = 0; i < 5; i++){
             int rndInt = (int) (Math.random()*4);
@@ -80,26 +84,47 @@ public class MainActivity extends ActionBarActivity {
         int height = display.getHeight();
 
         int action = event.getAction();
+
+
         if(action == MotionEvent.ACTION_DOWN){
             int rndInt = (int) (Math.random()*4);
-            queue.add(rndInt);
+
 
             if(event.getX() < width/2){
 
 //                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
 //                toast.show();
 
+                if(queue.get(0)%2 == 0){
+                    score += 100;
+                    combo++;
+                }
+                else{
+                    score -= 50;
+                    combo = 0;
+                }
 
 
             }
             else{
 //                Toast toast = Toast.makeText(this, "오른쪽 입력.", Toast.LENGTH_SHORT);
 //                toast.show();
-
+                if(queue.get(0)%2 == 1){
+                    score += 100;
+                    combo++;
+                }
+                else{
+                    score -= 50;
+                    combo = 0;
+                }
 
             }
-            refreshImage();
+
             queue.remove(0);
+            queue.add(rndInt);
+            refreshImage();
+
+
 
         }
 
@@ -125,6 +150,13 @@ public class MainActivity extends ActionBarActivity {
                     break;
             }
         }
+        if(combo == 0) comboView.setVisibility(View.INVISIBLE);
+        else {
+            comboView.setVisibility(View.VISIBLE);
+            comboView.setText(combo + " Combo!");
+        }
+        scoreView.setText("Your Score\n"+ score +"점");
+
     }
 
 //
