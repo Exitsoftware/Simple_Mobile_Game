@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
-//    ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
+
     ArrayList<Integer> queue = new ArrayList<Integer>();
     ArrayList<ImageButton> btnList = new ArrayList<ImageButton>();
 
@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
 
     int score = 0;
     int combo = 0;
+
     TextView scoreView;
     TextView comboView;
 
@@ -52,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
         btnList.add(btn5);
 
 
+        // rndInt 문제 1
 
         for(int i = 0; i < 5; i++){
             int rndInt = (int) (Math.random()*4);
@@ -60,41 +62,25 @@ public class MainActivity extends ActionBarActivity {
 
         refreshImage();
 
-
-
-
-
-
-
-//        ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
-//        btn1.setImageResource(R.drawable.char02);
-
-
-
-//        MainView
-//        setContentView(new drawView(this));
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         int width = display.getWidth();
         int height = display.getHeight();
-
         int action = event.getAction();
 
 
         if(action == MotionEvent.ACTION_DOWN){
             int rndInt = (int) (Math.random()*4);
 
-
+            // 왼쪽, 오른쪽 판별
             if(event.getX() < width/2){
+                // 왼쪽
 
-//                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
-//                toast.show();
-
+                // 홀짝 판별
                 if(queue.get(0)%2 == 0){
                     score += 100;
                     combo++;
@@ -107,8 +93,8 @@ public class MainActivity extends ActionBarActivity {
 
             }
             else{
-//                Toast toast = Toast.makeText(this, "오른쪽 입력.", Toast.LENGTH_SHORT);
-//                toast.show();
+                // 오른쪽
+
                 if(queue.get(0)%2 == 1){
                     score += 100;
                     combo++;
@@ -124,14 +110,16 @@ public class MainActivity extends ActionBarActivity {
             queue.add(rndInt);
             refreshImage();
 
-
-
         }
 
         return super.onTouchEvent(event);
     }
 
+
     public void refreshImage(){
+
+        // 리프레시 완성
+
         for(int i = 0; i < btnList.size(); i++){
             int rndInt = queue.get(i);
             ImageButton curBtn = btnList.get(i);
@@ -159,31 +147,6 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-//
-//    private class drawView extends View {
-//        Paint mPaint;
-//        Bitmap char01, char02, char03, char04;
-//        drawView(Context context){
-//            super(context);
-//            char01 = BitmapFactory.decodeResource(getResources(),R.drawable.char01);
-//            char02 = BitmapFactory.decodeResource(getResources(),R.drawable.char02);
-//            char03 = BitmapFactory.decodeResource(getResources(),R.drawable.char03);
-//            char04 = BitmapFactory.decodeResource(getResources(),R.drawable.char04);
-//            mPaint = new Paint();
-//        }
-//
-//        protected void onDraw(Canvas canvas){
-//            canvas.drawCircle(100,100,90,mPaint);
-//            canvas.drawBitmap(char01,100,100,null);
-//        }
-//    }
-//    WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//    2
-//    Display display = wm.getDefaultDisplay();
-//    3
-//            Log.d("display", "w:" + display.getWidth());
-//    4
-//            Log.d("display", "h:" + display.getHeight())
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
