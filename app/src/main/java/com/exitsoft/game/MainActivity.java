@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
-//    ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
+
     ArrayList<Integer> queue = new ArrayList<Integer>();
     ArrayList<ImageButton> btnList = new ArrayList<ImageButton>();
 
@@ -29,7 +29,11 @@ public class MainActivity extends ActionBarActivity {
 
     int score = 0;
     int combo = 0;
+<<<<<<< HEAD
     int highScore;
+=======
+
+>>>>>>> origin/master
     TextView scoreView;
     TextView comboView;
 
@@ -55,6 +59,7 @@ public class MainActivity extends ActionBarActivity {
         btnList.add(btn5);
 
 
+        // rndInt 문제 1
 
         for(int i = 0; i < 5; i++){
             if((int)(Math.random() * 20) == 1) queue.add(4);
@@ -71,21 +76,21 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
-        ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         int width = display.getWidth();
         int height = display.getHeight();
-
         int action = event.getAction();
 
 
         if(action == MotionEvent.ACTION_DOWN){
 
 
-
+            // 왼쪽, 오른쪽 판별
             if(event.getX() < width/2){
+                // 왼쪽
 
+<<<<<<< HEAD
 //                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
 //                toast.show();
 
@@ -99,6 +104,10 @@ public class MainActivity extends ActionBarActivity {
 
                 }
                 else if(queue.get(0)%2 == 0){
+=======
+                // 홀짝 판별
+                if(queue.get(0)%2 == 0){
+>>>>>>> origin/master
                     score += 100;
                     combo++;
                 }
@@ -112,6 +121,7 @@ public class MainActivity extends ActionBarActivity {
 
             }
             else{
+<<<<<<< HEAD
                 // item
                 if(queue.get(0) == 4){
                     int tmp = (int) (Math.random()*4);
@@ -122,6 +132,11 @@ public class MainActivity extends ActionBarActivity {
 
                 }
                 else if(queue.get(0)%2 == 1){
+=======
+                // 오른쪽
+
+                if(queue.get(0)%2 == 1){
+>>>>>>> origin/master
                     score += 100;
                     combo++;
                 }
@@ -142,14 +157,16 @@ public class MainActivity extends ActionBarActivity {
             }
             refreshImage();
 
-
-
         }
 
         return super.onTouchEvent(event);
     }
 
+
     public void refreshImage(){
+
+        // 리프레시 완성
+
         for(int i = 0; i < btnList.size(); i++){
             int rndInt = queue.get(i);
             ImageButton curBtn = btnList.get(i);
