@@ -1,6 +1,7 @@
 package com.exitsoft.game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
@@ -28,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
 
     int score = 0;
     int combo = 0;
+    int highScore;
     TextView scoreView;
     TextView comboView;
 
@@ -35,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(!getHighScore().equals("NULL")) highScore = Integer.parseInt(getHighScore());
 
         scoreView = (TextView) findViewById(R.id.scoreView);
         comboView = (TextView) findViewById(R.id.comboView);
@@ -54,26 +57,17 @@ public class MainActivity extends ActionBarActivity {
 
 
         for(int i = 0; i < 5; i++){
-            int rndInt = (int) (Math.random()*4);
-            queue.add(rndInt);
+            if((int)(Math.random() * 20) == 1) queue.add(4);
+            else {
+                int rndInt = (int) (Math.random() * 4);
+                queue.add(rndInt);
+            }
         }
 
         refreshImage();
 
-
-
-
-
-
-
-//        ImageButton btn1 = (ImageButton) findViewById(R.id.imageButton2);
-//        btn1.setImageResource(R.drawable.char02);
-
-
-
-//        MainView
-//        setContentView(new drawView(this));
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event){
@@ -87,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         if(action == MotionEvent.ACTION_DOWN){
-            int rndInt = (int) (Math.random()*4);
+
 
 
             if(event.getX() < width/2){
@@ -95,33 +89,57 @@ public class MainActivity extends ActionBarActivity {
 //                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
 //                toast.show();
 
-                if(queue.get(0)%2 == 0){
+                // item
+                if(queue.get(0) == 4){
+                    int tmp = (int) (Math.random()*4);
+                    for(int i = 0; i < 5; i++) queue.set(i, tmp);
+                }
+                // bomb
+                else if(queue.get(0) == 5){
+
+                }
+                else if(queue.get(0)%2 == 0){
                     score += 100;
                     combo++;
                 }
                 else{
-                    score -= 50;
+                    if(highScore < score) saveHighScore();
+                    highScore = Integer.parseInt(getHighScore());
+                    score = 0;
                     combo = 0;
                 }
 
 
             }
             else{
-//                Toast toast = Toast.makeText(this, "오른쪽 입력.", Toast.LENGTH_SHORT);
-//                toast.show();
-                if(queue.get(0)%2 == 1){
+                // item
+                if(queue.get(0) == 4){
+                    int tmp = (int) (Math.random()*4);
+                    for(int i = 0; i < 5; i++) queue.set(i, tmp);
+                }
+                // bomb
+                else if(queue.get(0) == 5){
+
+                }
+                else if(queue.get(0)%2 == 1){
                     score += 100;
                     combo++;
                 }
                 else{
-                    score -= 50;
+                    if(highScore < score) saveHighScore();
+                    highScore = Integer.parseInt(getHighScore());
+                    score = 0;
                     combo = 0;
                 }
 
             }
 
             queue.remove(0);
-            queue.add(rndInt);
+            if((int)(Math.random() * 20) == 1) queue.add(4);
+            else {
+                int rndInt = (int) (Math.random() * 4);
+                queue.add(rndInt);
+            }
             refreshImage();
 
 
@@ -148,6 +166,12 @@ public class MainActivity extends ActionBarActivity {
                 case 3:
                     curBtn.setImageResource(R.drawable.char04);
                     break;
+                case 4:
+                    curBtn.setImageResource(R.drawable.item);
+                    break;
+                case 5:
+                    curBtn.setImageResource(R.drawable.bomb);
+                    break;
             }
         }
         if(combo == 0) comboView.setVisibility(View.INVISIBLE);
@@ -155,35 +179,10 @@ public class MainActivity extends ActionBarActivity {
             comboView.setVisibility(View.VISIBLE);
             comboView.setText(combo + " Combo!");
         }
-        scoreView.setText("Your Score\n"+ score +"점");
+        scoreView.setText("Your Score\n"+ score +"점\n"+"High Score\n" + highScore + "점");
 
     }
 
-//
-//    private class drawView extends View {
-//        Paint mPaint;
-//        Bitmap char01, char02, char03, char04;
-//        drawView(Context context){
-//            super(context);
-//            char01 = BitmapFactory.decodeResource(getResources(),R.drawable.char01);
-//            char02 = BitmapFactory.decodeResource(getResources(),R.drawable.char02);
-//            char03 = BitmapFactory.decodeResource(getResources(),R.drawable.char03);
-//            char04 = BitmapFactory.decodeResource(getResources(),R.drawable.char04);
-//            mPaint = new Paint();
-//        }
-//
-//        protected void onDraw(Canvas canvas){
-//            canvas.drawCircle(100,100,90,mPaint);
-//            canvas.drawBitmap(char01,100,100,null);
-//        }
-//    }
-//    WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-//    2
-//    Display display = wm.getDefaultDisplay();
-//    3
-//            Log.d("display", "w:" + display.getWidth());
-//    4
-//            Log.d("display", "h:" + display.getHeight())
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -204,5 +203,17 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveHighScore(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("highScore", String.valueOf(score));
+        editor.commit();
+    }
+
+    private String getHighScore(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        return pref.getString("highScore", "NULL").toString();
     }
 }
