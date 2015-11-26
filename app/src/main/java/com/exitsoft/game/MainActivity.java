@@ -29,11 +29,9 @@ public class MainActivity extends ActionBarActivity {
 
     int score = 0;
     int combo = 0;
-<<<<<<< HEAD
     int highScore;
-=======
 
->>>>>>> origin/master
+
     TextView scoreView;
     TextView comboView;
 
@@ -90,28 +88,16 @@ public class MainActivity extends ActionBarActivity {
             if(event.getX() < width/2){
                 // 왼쪽
 
-<<<<<<< HEAD
-//                Toast toast = Toast.makeText(this, "왼쪽쪽 입력.", Toast.LENGTH_SHORT);
-//                toast.show();
-
-                // item
                 if(queue.get(0) == 4){
                     int tmp = (int) (Math.random()*4);
                     for(int i = 0; i < 5; i++) queue.set(i, tmp);
                 }
-                // bomb
-                else if(queue.get(0) == 5){
-
-                }
-                else if(queue.get(0)%2 == 0){
-=======
                 // 홀짝 판별
-                if(queue.get(0)%2 == 0){
->>>>>>> origin/master
+                else if(queue.get(0)%2 == 0){
                     score += 100;
                     combo++;
                 }
-                else{
+                else if(queue.get(0)%2 == 1){
                     if(highScore < score) saveHighScore();
                     highScore = Integer.parseInt(getHighScore());
                     score = 0;
@@ -121,26 +107,17 @@ public class MainActivity extends ActionBarActivity {
 
             }
             else{
-<<<<<<< HEAD
                 // item
                 if(queue.get(0) == 4){
                     int tmp = (int) (Math.random()*4);
                     for(int i = 0; i < 5; i++) queue.set(i, tmp);
                 }
-                // bomb
-                else if(queue.get(0) == 5){
-
-                }
                 else if(queue.get(0)%2 == 1){
-=======
-                // 오른쪽
 
-                if(queue.get(0)%2 == 1){
->>>>>>> origin/master
                     score += 100;
                     combo++;
                 }
-                else{
+                else if(queue.get(0)%2 == 0){
                     if(highScore < score) saveHighScore();
                     highScore = Integer.parseInt(getHighScore());
                     score = 0;
